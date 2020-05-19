@@ -7,7 +7,7 @@ var width = 800;
 var height = 400;
 
 // Declare svg d3 object.
-var svg = d3.select(".d3-div")
+var svgStuff = d3.select(".d3-div")
             .append("svg")
             .attr("width", width*1.15)
     .attr("height", height*1.15);
@@ -29,14 +29,14 @@ d3.json(url)
     .then(function(data) {
 
 	// Add future y-label
-	svg.append('text')
+	svgStuff.append('text')
 	.attr('transform', 'rotate(-90)')
 	.attr('x', -300)
 	.attr('y', 80)
 	.text('Gross Domestic Product');
 	
 	// Add future x-label.
-	svg.append('text')
+	svgStuff.append('text')
 	.attr('x', width / 2 + 90)
 	.attr('y', height + 50)
         .text('Time (years)')
@@ -77,13 +77,13 @@ d3.json(url)
                      .range([0, width]);
 
       // Use time scale to create x-axis, with x-axis placed on bottom.
-      let xAxis = d3.axisBottom()
-                    .scale(timeScale);
+	let xAxis = d3.axisBottom(timeScale); //()
+                    //.scale(timeScale);
       
 
 
       // Plot x-axis.
-      let xAxisPlot = svg.append("g")
+      let xAxisPlot = svgStuff.append("g")
           .call(xAxis)
           .attr("id", "x-axis")
           .attr("transform", "translate(60, 400)");
@@ -104,13 +104,28 @@ d3.json(url)
           .domain([0, d3.max(gdpData)])
           .range([height, 0]);
 
+      // Place y-axis on left.	
       let yAxis = d3.axisLeft(yAxisScale);
 
-      let yAxisPlot = svg.append("g")
+      // Plot y-axis.	
+      let yAxisPlot = svgStuff.append("g")
           .call(yAxis)
           .attr("id", "y-axis")
           .attr("transform", "translate(60, 0)");
       
+        // Add the scalable vector graphic element for creating the bar plot.
+	d3.select('svg')       
+	    .selectAll('rect') 
+	    .data(gdpScaled)  // add scaled gdp data
+	    .enter()          
+	    .append('rect')
+	    .attr('class', 'bar') // pass the class bar test
+	    .attr('x', (d, i) => timeScale(i) ) // map i-th data point to time scale on x-axis.
+	    .attr('y', (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
+            .style('fill', 'green')
+	    .attr('transform', 'translate(60, 0)');
+
+
 
 
       
