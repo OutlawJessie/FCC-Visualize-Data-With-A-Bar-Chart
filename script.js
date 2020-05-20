@@ -58,6 +58,10 @@ d3.json(url)
       let dates = data["data"].map(nestedArr => nestedArr[0]);
       let gdpData = data["data"].map(nestedArr => nestedArr[1]);
 
+      // Get bar width for bar plot based on number of data points and width of svg.
+      let barWidth = width/dates.length;
+
+	
       // Extract the quarters and years from the data.
       let yearAndQuarter = data["data"].map( (dateStr)=>{
 	  let dateArr = dateStr[0].split('-');
@@ -112,18 +116,22 @@ d3.json(url)
           .call(yAxis)
           .attr("id", "y-axis")
           .attr("transform", "translate(60, 0)");
-      
+
         // Add the scalable vector graphic element for creating the bar plot.
-	d3.select('svg')       
-	    .selectAll('rect') 
+	d3.select("svg")       
+	    .selectAll("rect") 
 	    .data(gdpScaled)  // add scaled gdp data
 	    .enter()          
-	    .append('rect')
-	    .attr('class', 'bar') // pass the class bar test
-	    .attr('x', (d, i) => timeScale(i) ) // map i-th data point to time scale on x-axis.
-	    .attr('y', (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
-            .style('fill', 'green')
-	    .attr('transform', 'translate(60, 0)');
+	    .append("rect")
+	    .attr("class", "bar") // pass the class bar test
+	    .attr("x", (d, i) => i*barWidth ) // map i-th data point to time scale on x-axis. ------
+	    .attr("width", barWidth)          // add width of each bar for line above.
+	    .attr("y", (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
+	    .attr("height", (d) => d)        // height of each bar
+            .attr("data-date", (d, i) => dates[i] )
+	    .attr("data-gdp", (d, i) => gdpData[i] )
+            .style("fill", "green")
+	    .attr("transform", "translate(60, 0)"); // Move the bars to the right to lign up with x-axis.
 
 
 
