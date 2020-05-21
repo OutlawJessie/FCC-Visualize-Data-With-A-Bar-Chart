@@ -6,6 +6,12 @@ var url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/m
 var width = 800;
 var height = 400;
 
+
+// Tooltip for mouseover inside json function.
+var tooltip = d3.select("body") // Doesn't work if you select d3-div
+                .append("div")
+                .attr("id","tooltip");
+
 // Declare svg d3 object.
 var svgStuff = d3.select(".d3-div")
             .append("svg")
@@ -62,7 +68,7 @@ d3.json(url)
       let barWidth = width/dates.length;
 
 	
-      // Extract the quarters and years from the data.
+      // Extract the quarters and years from the data for use later with the tooltip.
       let yearAndQuarter = data["data"].map( (dateStr)=>{
 	  let dateArr = dateStr[0].split('-');
 	  return dateArr[0] + " " + month2QuarterMap.get(dateArr[1]);
@@ -124,17 +130,24 @@ d3.json(url)
 	    .enter()          
 	    .append("rect")
 	    .attr("class", "bar") // pass the class bar test
-	    .attr("x", (d, i) => i*barWidth ) // map i-th data point to time scale on x-axis. ------
+	    .attr("x", (d, i) => i*barWidth ) // map i-th data point to time scale on x-axis. 
 	    .attr("width", barWidth)          // add width of each bar for line above.
 	    .attr("y", (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
 	    .attr("height", (d) => d)        // height of each bar
             .attr("data-date", (d, i) => dates[i] )
 	    .attr("data-gdp", (d, i) => gdpData[i] )
             .style("fill", "green")
-	    .attr("transform", "translate(60, 0)"); // Move the bars to the right to lign up with x-axis.
-
-
-
+	    .attr("transform", "translate(60, 0)") // Move the bars to the right to lign up with x-axis.
+	// Delight the money trolls with this mousover/mouseout
+       	// that uses the tooltip.
+	.on("mouseover", (d, i) => {
+	        tooltip.attr('data-date', dates[i])
+                       .style("display", "inline-block")
+	               .html(yearAndQuarter[i] + '<br>' + '$' + gdpData[i] + ' Billion USD' );
+	})
+	.on("mouseout", (d) => {
+	    tooltip.style("display","none");
+	});
 
       
       
