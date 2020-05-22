@@ -5,10 +5,16 @@ html {
 body {
     font-size: 2rem;
     font-weight: bold;
+    background-color: black;
+    color: white;
 }
 
 h1 {
     text-align: center;
+}
+
+#title{
+    color: #f50707;
 }
 
 /* Set wrapper text-align to center, and .d3-div to display inline block 
@@ -30,10 +36,10 @@ svg {
 /* Set the fill color for the d3 rect elements
    and change color on hover. */
 .bar {
-    fill: green;
+    fill: #5CDB95;
 }
 .bar:hover {
-    fill: red;
+    fill: #f50707;
 }
 
 
@@ -43,13 +49,13 @@ svg {
   display: none; /*will set inline block in d3*/
   min-width: 80px;
   height: auto;
-  background: orange;
+  background: white;
   opacity: 0.6;
-  border: 1px solid black;
+  border: 1px solid #f50707;
   border-radius: 1rem;
   padding: 1.5rem;
   text-align: left;
-  color: blue;
-  box-shadow: 1px 1px 20px orange;
+  color: black;
+  box-shadow: 1px 1px 20px #f50707;
 }
 

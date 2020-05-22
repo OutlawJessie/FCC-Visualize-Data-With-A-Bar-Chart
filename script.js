@@ -84,10 +84,7 @@ d3.json(url)
                      .range([0, width]);
 
       // Use time scale to create x-axis, with x-axis placed on bottom.
-	let xAxis = d3.axisBottom(timeScale); //()
-                    //.scale(timeScale);
-      
-
+	let xAxis = d3.axisBottom(timeScale); 
 
       // Plot x-axis.
       let xAxisPlot = svgStuff.append("g")
@@ -132,7 +129,7 @@ d3.json(url)
 	    .attr("y", (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
 	    .attr("height", (d) => d)        // height of each bar
             .attr("data-date", (d, i) => dates[i] )
-	    .attr("data-gdp", (d, i) => gdpData[i] )// ---             .style("fill", "green")
+	    .attr("data-gdp", (d, i) => gdpData[i] ) 
 	    .attr("transform", "translate(60, 0)") // Move the bars to the right to lign up with x-axis.
 	// Delight the money trolls with this mousover/mouseout
        	// that uses the tooltip.
@@ -141,8 +138,6 @@ d3.json(url)
 		.style('display', 'inline-block')
                 .style("left", d3.event.pageX - 120 + "px") // Position x coordinate of tooltip relative to current bar
 	        .style("top", d3.event.pageY - 120 + "px") // Position y coordinate of tooltip relative to current bar
-//		.style('left', i*barWidth + 'px')
-//	        .style('top', height - d + 'px')
 	        .style('transform', 'translateX(60px)')
 	               .html(yearAndQuarter[i] + '<br>' + '$' + gdpData[i] + ' Billion USD' );
 	})
@@ -150,7 +145,6 @@ d3.json(url)
 	    tooltip.style("display","none");
 	});
 
-      
       
   })
   // Log error if promise on loading data not fulfilled.
