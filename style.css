@@ -4,9 +4,52 @@ html {
 
 body {
     font-size: 2rem;
+    font-weight: bold;
 }
 
 h1 {
     text-align: center;
+}
+
+/* Set wrapper text-align to center, and .d3-div to display inline block 
+   to center*/
+.wrapper {
+    text-align: center;
+}
+
+.d3-div {
+    display: inline-block;
+}
+
+/* Add some padding so y-axis ticks and label don't get truncated. */
+svg {
+    padding-left: 3rem;
+    padding-top: 3rem;
+}
+
+/* Set the fill color for the d3 rect elements
+   and change color on hover. */
+.bar {
+    fill: green;
+}
+.bar:hover {
+    fill: red;
+}
+
+
+
+#tooltip {
+  position: absolute;
+  display: none; /*will set inline block in d3*/
+  min-width: 80px;
+  height: auto;
+  background: orange;
+  opacity: 0.6;
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  color: blue;
+  box-shadow: 1px 1px 20px orange;
 }
 

@@ -6,17 +6,24 @@ var url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/m
 var width = 800;
 var height = 400;
 
+// Add an h1 title.
+var section = d3.select(".header-info")
+	        .append("h1")
+	        .attr("id","title")
+	        .text("USA GDP Since 1947");
+
 
 // Tooltip for mouseover inside json function.
 var tooltip = d3.select("body") // Doesn't work if you select d3-div
-                .append("div")
-                .attr("id","tooltip");
+    .append("div")
+    .attr("id","tooltip")
+    .style("display","none"); // will set display of tooltip for each rect
 
 // Declare svg d3 object.
 var svgStuff = d3.select(".d3-div")
             .append("svg")
             .attr("width", width*1.15)
-    .attr("height", height*1.15);
+            .attr("height", height*1.15);
 
 
 
@@ -38,27 +45,17 @@ d3.json(url)
 	svgStuff.append('text')
 	.attr('transform', 'rotate(-90)')
 	.attr('x', -300)
-	.attr('y', 80)
+	.attr('y', 10)
 	.text('Gross Domestic Product');
 	
 	// Add future x-label.
 	svgStuff.append('text')
-	.attr('x', width / 2 + 90)
+	.attr('x', width / 2 )
 	.attr('y', height + 50)
         .text('Time (years)')
         .attr('class', 'info');
 
-       // Body section tag.
-       var section = d3.select("body")
-	            .append("section");
-
-      // Append header to the body section with
-      // an h1 tag.
-      var heading = section.append("header");
-      heading.append("h1")
-             .attr('id', 'title')
-             .text("USA GDP Since 1947");
-
+	
       // Extract an array of dates and an array of gdp data from
       // the data.
       let dates = data["data"].map(nestedArr => nestedArr[0]);
@@ -135,14 +132,18 @@ d3.json(url)
 	    .attr("y", (d, i) => height - d) // map i-th data point on y-axis to height minus data since inverted.
 	    .attr("height", (d) => d)        // height of each bar
             .attr("data-date", (d, i) => dates[i] )
-	    .attr("data-gdp", (d, i) => gdpData[i] )
-            .style("fill", "green")
+	    .attr("data-gdp", (d, i) => gdpData[i] )// ---             .style("fill", "green")
 	    .attr("transform", "translate(60, 0)") // Move the bars to the right to lign up with x-axis.
 	// Delight the money trolls with this mousover/mouseout
        	// that uses the tooltip.
 	.on("mouseover", (d, i) => {
-	        tooltip.attr('data-date', dates[i])
-                       .style("display", "inline-block")
+	    tooltip.attr('data-date', dates[i])
+		.style('display', 'inline-block')
+                .style("left", d3.event.pageX - 120 + "px") // Position x coordinate of tooltip relative to current bar
+	        .style("top", d3.event.pageY - 120 + "px") // Position y coordinate of tooltip relative to current bar
+//		.style('left', i*barWidth + 'px')
+//	        .style('top', height - d + 'px')
+	        .style('transform', 'translateX(60px)')
 	               .html(yearAndQuarter[i] + '<br>' + '$' + gdpData[i] + ' Billion USD' );
 	})
 	.on("mouseout", (d) => {
@@ -156,4 +157,3 @@ d3.json(url)
   .catch(function(error) {
       console.log(error);
   });
-
